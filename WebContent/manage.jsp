@@ -52,6 +52,7 @@
     <div class="input-group center-block">
 			<p>登录成功！欢迎，<%=userid %></p>
 			<a class="btn btn-default navbar-btn" href="freePark.jsp">车辆进出管理</a>
+			<a class="btn btn-default navbar-btn" href="managePlace.jsp">车位管理</a>
     </div><!-- /input-group -->
   		</div>
   </div><!-- /.col-lg-6 -->
