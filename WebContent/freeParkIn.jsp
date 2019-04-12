@@ -39,6 +39,7 @@
               <li><a href="status.jsp">车位状态</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+			<b>登录成功！欢迎，<%=userid %></b>
               <a class="btn btn-default navbar-btn" href="quit" role="button">退出登录</a>
             </ul>
           </div><!--/.nav-collapse -->

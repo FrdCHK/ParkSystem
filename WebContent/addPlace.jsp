@@ -51,10 +51,15 @@
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
     <div class="input-group center-block">
-    		<%request.setCharacterEncoding("UTF-8");
-    	    float sum=Float.parseFloat(request.getParameter("sum")); %>
-    	    <p>收费：<%=sum %>元</p>
-			<a class="btn btn-default navbar-btn" href="manage.jsp">返回</a>
+			<a class="btn btn-default" href="managePlace.jsp">返回</a>
+    		<form action="add" method="post">
+					<input type="text" class="form-control" name="pNo" value="" placeholder="车位号" />
+					<input type="radio" name="pClass" value="1">固定<br>
+					<input type="radio" name="pClass" value="0">自由<br>
+				<span class="input-group-btn">
+					<input type="submit"  class="btn btn-default" value="提交" />
+				</span>
+         </form>
     </div><!-- /input-group -->
   		</div>
   </div><!-- /.col-lg-6 -->

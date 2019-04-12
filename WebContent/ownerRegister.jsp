@@ -46,15 +46,41 @@
         </div>
       </nav>
 <!-- header  end-->
+<script type="text/javascript">
+	function check(formsub){
+		document.getElementById("b1").style.visibility="hidden";
+		document.getElementById("b2").style.visibility="hidden";
+		document.getElementById("b3").style.visibility="hidden";
+		console.log("onsubmit");
+		if(formsub.elements[0].value==""){
+			document.getElementById("b1").style.visibility="visible";
+			return false;
+		}else if(formsub.elements[1].value==""){
+			document.getElementById("b2").style.visibility="visible";
+			return false;
+		}else if(formsub.elements[2].value==""){
+			document.getElementById("b3").style.visibility="visible";
+			return false;
+		}
+	}
+</script>
 <!-- main -->
 <div class="container">
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
     <div class="input-group center-block">
-    		<%request.setCharacterEncoding("UTF-8");
-    	    float sum=Float.parseFloat(request.getParameter("sum")); %>
-    	    <p>收费：<%=sum %>元</p>
-			<a class="btn btn-default navbar-btn" href="manage.jsp">返回</a>
+			<a class="btn btn-default" href="user.jsp">返回</a>
+    		<form action="register" method="post" onsubmit="return check(this);">
+					<input type="text" class="form-control" name="id" value="" placeholder="身份证号" />
+					<br><b id="b1" style="visibility:hidden">身份证号不能为空！</b><br>
+					<input type="text" class="form-control" name="name" value="" placeholder="姓名" />
+					<br><b id="b2" style="visibility:hidden">姓名不能为空！</b><br>
+					<input type="text" class="form-control" name="phone" value="" placeholder="电话" />
+					<br><b id="b3" style="visibility:hidden">电话不能为空！</b><br>
+				<span class="input-group-btn">
+					<input type="submit"  class="btn btn-default" value="提交" />
+				</span>
+         </form>
     </div><!-- /input-group -->
   		</div>
   </div><!-- /.col-lg-6 -->

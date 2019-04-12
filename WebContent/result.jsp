@@ -39,6 +39,7 @@
               <li><a href="status.jsp">车位状态</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+			<b>登录成功！欢迎，<%=userid %></b>
               <a class="btn btn-default navbar-btn" href="quit" role="button">退出登录</a>
             </ul>
           </div><!--/.nav-collapse -->
@@ -59,7 +60,10 @@
     		}else if(succ==2){%>
     		<p>车位已满！</p>
     		<%}%>
-			<a class="btn btn-default navbar-btn" href="manage.jsp">返回</a>
+			<a class="btn btn-default" href="manage.jsp">停车场业务</a>
+			<a class="btn btn-default" href="freePark.jsp">进出管理</a>
+			<a class="btn btn-default" href="managePlace.jsp">车位管理</a>
+			<br><a class="btn btn-default" href="user.jsp">车卡业务</a>
     </div><!-- /input-group -->
   		</div>
   </div><!-- /.col-lg-6 -->

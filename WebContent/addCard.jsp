@@ -3,6 +3,7 @@
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ page import="bean.Owner"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -25,7 +26,54 @@
     		if(userid==null)
     		{
     			response.sendRedirect("manageLogin.jsp");
-    		}%>
+    		}
+	String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
+	String user = "root";//登录数据库的用户名
+	String password = "Mdzz1234";//登录数据库的用户名的密码
+	Connection conn = null;
+	Statement stmt = null;
+	ResultSet rs = null;
+	ArrayList<Owner> result = new ArrayList<Owner>();
+	Iterator<Owner> iter = null;
+	String sql="";
+	try {
+		Class.forName("com.mysql.jdbc.Driver");//加载JDBC驱动程序
+		conn = DriverManager.getConnection(url, user, password);//链接数据库
+	} catch (ClassNotFoundException e) {
+		System.out.println("找不到驱动类");//抛出异常时，提示信息
+		response.sendRedirect("index.jsp");
+	} catch (SQLException e) {
+		System.out.println("SQLException");//处理SQLException异常
+		response.sendRedirect("index.jsp");
+	}
+	try {
+		stmt = conn.createStatement();
+	} catch (SQLException e1) {
+		// TODO 自动生成的 catch 块
+		e1.printStackTrace();
+		response.sendRedirect("index.jsp");
+	}
+	try {
+		sql="select * from owner";
+		rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			result.add(new Owner(rs.getString(1), rs.getString(2), rs.getString(3)));
+		}
+		iter = result.iterator();
+	} catch (SQLException e1) {
+		// TODO 自动生成的 catch 块
+		e1.printStackTrace();
+		response.sendRedirect("index.jsp");
+	}
+	try {
+		stmt.close();
+		conn.close();
+	} catch (SQLException e1) {
+		// TODO 自动生成的 catch 块
+		e1.printStackTrace();
+		response.sendRedirect("index.jsp");
+	}
+  %>
   <body>
       <!-- header -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -51,10 +99,29 @@
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
     <div class="input-group center-block">
-    		<%request.setCharacterEncoding("UTF-8");
-    	    float sum=Float.parseFloat(request.getParameter("sum")); %>
-    	    <p>收费：<%=sum %>元</p>
-			<a class="btn btn-default navbar-btn" href="manage.jsp">返回</a>
+			<a class="btn btn-default navbar-btn" href="user.jsp">返回</a>
+    		<table class="table table-striped">
+						<caption>车主列表</caption>
+						<thead>
+							<tr>
+								<th>身份证号</th>
+								<th>姓名</th>
+								<th>电话</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%Owner pl;
+							while (iter.hasNext()) {
+							pl=iter.next();%>
+							<tr>
+							<td><%=pl.getId() %></td>
+							<td><%=pl.getName() %></td>
+							<td><%=pl.getPhone() %></td>
+							<td><a href="cardOn.jsp?id=<%=pl.getId() %>">绑定车位</a><a href="cardOff.jsp?id=<%=pl.getId() %>">解绑车位</a></td>
+							</tr><%}%>
+						</tbody>
+					</table>
     </div><!-- /input-group -->
   		</div>
   </div><!-- /.col-lg-6 -->

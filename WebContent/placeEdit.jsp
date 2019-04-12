@@ -27,6 +27,8 @@
 	if (userid == null) {
 		response.sendRedirect("manageLogin.jsp");
 	}
+	int placeNo=Integer.parseInt(request.getParameter("no"));
+	int placeClass=Integer.parseInt(request.getParameter("cls"));
 	String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
 	String user = "root";//登录数据库的用户名
 	String password = "Mdzz1234";//登录数据库的用户名的密码
@@ -54,7 +56,7 @@
 		response.sendRedirect("index.jsp");
 	}
 	try {
-		sql="select * from place";
+		sql="select * from place where no="+placeNo;
 		rs = stmt.executeQuery(sql);
 		while (rs.next()) {
 			result.add(new Place(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4)));
@@ -98,24 +100,23 @@
 <div class="container">
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
+			<a class="btn btn-default" href="managePlace.jsp">返回</a>
 			<table class="table table-striped">
-						<caption>车位列表</caption>
+						<caption>车位详情</caption>
 						<thead>
 							<tr>
 								<th>编号</th>
 								<th>类型</th>
 								<th>状态</th>
 								<th>卡号</th>
-								<th>操作</th>
 							</tr>
 						</thead>
+						<%Place pl;
+						String cNo, pcls, card;
+						if (iter.hasNext()) {%>
 						<tbody>
-							<%Place pl;
-							String cNo, pcls, card;
-							while (iter.hasNext()) {
-							pl=iter.next();
-							if(pl.pclass==0) cNo="未知";
-							else cNo=pl.status==1?"有":"空";
+							<%pl=iter.next();
+							cNo=pl.status==1?"有":"空";
 							pcls=pl.pclass==1?"固定":"自由";
 							card=pl.cardNo==0?"未绑定":String.valueOf(pl.cardNo); %>
 							<tr>
@@ -123,12 +124,21 @@
 							<td><%=pcls %></td>
 							<td><%=cNo %></td>
 							<td><%=card %></td>
-							<td><a href="placeEdit.jsp?no=<%=pl.no %>&cls=<%=pl.pclass %>">修改</a></td>
-							</tr><%}%>
+							</tr>
 						</tbody>
 					</table>
-					<a class="btn btn-default" href="addPlace.jsp">增加车位</a>
-			<a class="btn btn-default" href="manage.jsp">返回</a>
+					<%if((pl.pclass==1 && pl.status==0 && pl.cardNo==0)|| pl.pclass==0){ %>
+					<form action="edit" method="post">
+					<input type="text" name="placeNo" value="<%=placeNo %>" style="display:none" />
+					<input type="radio" name="pClass" value="1">固定<br>
+					<input type="radio" name="pClass" value="0">自由<br>
+					<input type="submit"  class="btn btn-default" value="提交" />
+         </form>
+         <form action="remove" method="post">
+         		<input type="text" name="placeNo" value="<%=placeNo %>" style="display:none" />
+         		<input type="text" name="placeClass" value="<%=placeClass %>" style="display:none" />
+					<input type="submit"  class="btn btn-default" value="移除" />
+         </form><%}} %>
   		</div>
   </div><!-- /.col-lg-6 -->
 </div>

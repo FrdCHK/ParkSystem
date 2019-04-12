@@ -32,9 +32,15 @@
               <li><a href="index.jsp">首页</a></li>
               <li><a href="status.jsp">车位状态</a></li>
             </ul>
+            <%HttpSession sess = request.getSession(true);
+        	String userid = (String) sess.getAttribute("userid");
+        	if (userid == null) {
+        		response.sendRedirect("manageLogin.jsp");
+        	}else{ %>
             <ul class="nav navbar-nav navbar-right">
+			<b>登录成功！欢迎，<%=userid %></b>
               <a class="btn btn-default navbar-btn" href="quit" role="button">退出登录</a>
-            </ul>
+            </ul><%} %>
           </div><!--/.nav-collapse -->
         </div>
       </nav>
@@ -43,7 +49,9 @@
 <div class="container">
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
-			
+					<a class="btn btn-default" href="cardManage.jsp">车卡管理</a>
+					<a class="btn btn-default" href="ownerRegister.jsp">车主登记</a>
+					<a class="btn btn-default" href="addCard.jsp">车卡登记</a>
   		</div>
   </div><!-- /.col-lg-6 -->
 </div>

@@ -53,7 +53,7 @@ public class login extends HttpServlet {
 		  Statement stmt = conn.createStatement();//创建语句对象Statement
 		  String queryAll = "SELECT * FROM admin where name=\'"+username+"\'";
 		  ResultSet rs = stmt.executeQuery(queryAll);
-		  while(rs.next()){
+		  if(rs.next()){
 		    String pswd=rs.getString(4);
 			System.out.println(password+" "+pswd);
 		    if(pswd.equals(passwd)){
@@ -61,13 +61,14 @@ public class login extends HttpServlet {
 		    	sess.setAttribute("userid", username);
 		    	usr.setName(username);
 		    	usr.setPasswd(pswd);
-				response.sendRedirect("manage.jsp");
+				response.sendRedirect("index.jsp");
 		    }else{
 		    	response.sendRedirect("manageLogin.jsp");
 		     }
 		    }
 		}catch(SQLException e){
-			System.out.println("查询用户信息失败");}
+			System.out.println("查询用户信息失败");
+	    	response.sendRedirect("manageLogin.jsp");}
 	}
 
 	/**

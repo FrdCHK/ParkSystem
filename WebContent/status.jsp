@@ -55,9 +55,17 @@ try{
               <li><a href="index.jsp">首页</a></li>
               <li class="active"><a href="status.jsp">车位状态</a></li>
             </ul>
+            <%HttpSession sess = request.getSession(true);
+        	String userid = (String) sess.getAttribute("userid");
+        	if (userid == null) {%>
+        		<ul class="nav navbar-nav navbar-right">
+                <a class="btn btn-default navbar-btn" href="manageLogin.jsp" role="button">登录</a>
+              </ul>
+        	<%}else{ %>
             <ul class="nav navbar-nav navbar-right">
+			<b>登录成功！欢迎，<%=userid %></b>
               <a class="btn btn-default navbar-btn" href="quit" role="button">退出登录</a>
-            </ul>
+            </ul><%} %>
           </div><!--/.nav-collapse -->
         </div>
       </nav>
@@ -66,7 +74,7 @@ try{
 <div class="container">
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
-			<p>车位情况：<%=remain %>/<%=total %></p>
+			<p>自由车位情况：<%=remain %>/<%=total %></p>
   		</div>
   </div><!-- /.col-lg-6 -->
 </div>

@@ -39,6 +39,7 @@
               <li><a href="status.jsp">车位状态</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+			<b>登录成功！欢迎，<%=userid %></b>
               <a class="btn btn-default navbar-btn" href="quit" role="button">退出登录</a>
             </ul>
           </div><!--/.nav-collapse -->
@@ -50,7 +51,6 @@
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
     <div class="input-group center-block">
-			<p>登录成功！欢迎，<%=userid %></p>
 			<a class="btn btn-default navbar-btn" href="freePark.jsp">车辆进出管理</a>
 			<a class="btn btn-default navbar-btn" href="managePlace.jsp">车位管理</a>
     </div><!-- /input-group -->
