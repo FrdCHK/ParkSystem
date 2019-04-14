@@ -118,7 +118,7 @@
 							<td><%=pl.getId() %></td>
 							<td><%=pl.getName() %></td>
 							<td><%=pl.getPhone() %></td>
-							<td><a href="cardOn.jsp?id=<%=pl.getId() %>">绑定车位</a><a href="cardOff.jsp?id=<%=pl.getId() %>">解绑车位</a></td>
+							<td><a href="cardOn.jsp?id=<%=pl.getId() %>">绑定车位</a> <a href="cardOff.jsp?id=<%=pl.getId() %>">解绑车位</a></td>
 							</tr><%}%>
 						</tbody>
 					</table>

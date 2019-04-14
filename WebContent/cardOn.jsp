@@ -3,7 +3,6 @@
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
-<%@ page import="bean.Card"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -22,57 +21,18 @@
 
   </head>
   <%HttpSession sess = request.getSession(true);
-	String userid=(String)sess.getAttribute("userid");
-	if(userid==null)
-	{
-		response.sendRedirect("manageLogin.jsp");
-	}
-String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
-String user = "root";//登录数据库的用户名
-String password = "Mdzz1234";//登录数据库的用户名的密码
-Connection conn = null;
-Statement stmt = null;
-ResultSet rs = null;
-ArrayList<Card> result = new ArrayList<Card>();
-Iterator<Card> iter = null;
-String sql="";
-try {
-Class.forName("com.mysql.jdbc.Driver");//加载JDBC驱动程序
-conn = DriverManager.getConnection(url, user, password);//链接数据库
-} catch (ClassNotFoundException e) {
-System.out.println("找不到驱动类");//抛出异常时，提示信息
-response.sendRedirect("index.jsp");
-} catch (SQLException e) {
-System.out.println("SQLException");//处理SQLException异常
-response.sendRedirect("index.jsp");
-}
-try {
-stmt = conn.createStatement();
-} catch (SQLException e1) {
-// TODO 自动生成的 catch 块
-e1.printStackTrace();
-response.sendRedirect("index.jsp");
-}
-try {
-sql="select * from card";
-rs = stmt.executeQuery(sql);
-while (rs.next()) {
-	result.add(new Card(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
-}
-iter = result.iterator();
-} catch (SQLException e1) {
-// TODO 自动生成的 catch 块
-e1.printStackTrace();
-response.sendRedirect("index.jsp");
-}
-try {
-stmt.close();
-conn.close();
-} catch (SQLException e1) {
-// TODO 自动生成的 catch 块
-e1.printStackTrace();
-response.sendRedirect("index.jsp");
-}%>
+    		String userid=(String)sess.getAttribute("userid");
+    		if(userid==null)
+    		{
+    			response.sendRedirect("manageLogin.jsp");
+    		}
+    		String id=request.getParameter("id");%>
+    		<sql:setDataSource var="contents" driver="com.mysql.jdbc.Driver"
+	url="jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8"
+	user="root" password="Mdzz1234" />
+<sql:query dataSource="${contents}" var="result">
+SELECT no from place where class=1 and cardNo is null;
+</sql:query>
   <body>
       <!-- header -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -93,35 +53,64 @@ response.sendRedirect("index.jsp");
         </div>
       </nav>
 <!-- header  end-->
+<script type="text/javascript">
+	function check(formsub){
+		document.getElementById("b1").style.visibility="hidden";
+		document.getElementById("b2").style.visibility="hidden";
+		console.log("onsubmit  "+formsub.elements[1].value);
+		if(formsub.elements[1].value==""){
+			document.getElementById("b1").style.visibility="visible";
+			return false;
+		}
+		var ckbox=document.getElementsByName("placeNo");
+		var flag=false;
+		for(var i=0;i<ckbox.length;i++){
+			console.log(ckbox[i].checked);
+			if(ckbox[i].checked==true){
+				flag=true;
+				break;
+			}
+		}
+		console.log(flag);
+		if(!flag){
+			document.getElementById("b2").style.visibility="visible";
+			return false;
+		}
+	}
+</script>
 <!-- main -->
 <div class="container">
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
-					<a class="btn btn-default" href="user.jsp">返回</a>
-			<table class="table table-striped">
-						<caption>车位列表</caption>
+    <div class="input-group center-block">
+			<a class="btn btn-default" href="addCard.jsp">返回</a>
+    		<form action="newCard" method="post" onsubmit="return check(this);">
+         		<input type="text" name="ownerId" value="<%=id %>" style="display:none" /><br>
+					<input type="text" class="form-control" name="carNo" value="" placeholder="车牌号" />
+					<br><b id="b1" style="visibility:hidden">车牌号不能为空！</b><br>
+					<table class="table table-striped">
+						<caption>可选车位</caption>
 						<thead>
 							<tr>
-								<th>车卡号</th>
-								<th>车主身份证号</th>
 								<th>车位号</th>
-								<th>车牌号</th>
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
-							<%Card pl;
-							while (iter.hasNext()) {
-							pl=iter.next();%>
-							<tr>
-							<td><%=pl.no %></td>
-							<td><%=pl.ownerId %></td>
-							<td><%=pl.placeNo %></td>
-							<td><%=pl.carNo %></td>
-							<td><a href="delete?no=<%=pl.no %>">移除</a></td>
-							</tr><%}%>
+							<c:forEach var="row" items="${result.rows}">
+								<tr>
+									<td><c:out value="${row.no}" /></td>
+									<td><input type="radio" name="placeNo" value="${row.no}">选择<br></td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
+					<b id="b2" style="visibility:hidden">请选择车位！</b><br>
+				<span class="input-group-btn">
+					<input type="submit"  class="btn btn-default" value="提交" />
+				</span>
+         </form>
+    </div><!-- /input-group -->
   		</div>
   </div><!-- /.col-lg-6 -->
 </div>
