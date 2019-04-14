@@ -18,7 +18,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/navbar-fixed-top.css" rel="stylesheet">
-
+	<link href="css/index.css" rel="stylesheet">
   </head>
 <%int total=0, remain=0;
 String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
@@ -45,6 +45,40 @@ try{
   out.println("查询自由车位信息失败");}%>
   <body>
       <!-- header -->
+      <nav class="navbar" role="navigation">
+ 		<div style="width:200px">
+					<ul class="nav nav-pills nav-stacked">
+						<li class="dropdown">
+							<a href="manage.jsp" class="dropdown-toggle disabled">停车场业务 
+							<span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li class="dropdown-submenu">  
+									<a href="freePark.jsp">车辆进出</a>
+									<ul class="dropdown-menu">  
+										<li><a href="freeParkIn.jsp">入场</a></li>  
+                        				<li><a href="freeParkOut.jsp">出场</a></li>  
+                    				</ul>  
+								</li>
+								<li class="dropdown-submenu">  
+									<a href="managePlace.jsp">车位管理</a>
+									<ul class="dropdown-menu">  
+										<li><a href="addPlace.jsp">增加车位</a></li>  
+                    				</ul>  
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="user.jsp" class="dropdown-toggle disabled" data-toggle="dropdown">车卡业务 
+							<span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">  
+										<li><a href="cardManage.jsp">车卡管理</a></li>  
+                        				<li><a href="ownerRegister.jsp">车主登记</a></li>
+                        				<li><a href="addCard.jsp">车卡登记</a></li>   
+							</ul>
+						</li>
+					</ul>
+					</div>
+</nav>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
           <div class="navbar-header">
@@ -83,5 +117,17 @@ try{
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+        <script>/*下拉菜单*/
+$(document).ready(function(){
+dropdownOpen();
+});
+function dropdownOpen() {
+var $dropdownLi = $('li.dropdown');
+$dropdownLi.mouseover(function() {
+$(this).addClass('open');
+}).mouseout(function() {
+$(this).removeClass('open');
+});
+}</script>
   </body>
 </html>

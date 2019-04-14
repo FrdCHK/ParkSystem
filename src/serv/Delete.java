@@ -36,7 +36,7 @@ public class Delete extends HttpServlet {
 			response.sendRedirect("manageLogin.jsp");
 		}
 		int no=Integer.parseInt(request.getParameter("no"));
-		String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
+		String url = "jdbc:mysql://localhost:3306/parksystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
 		String user = "root";//登录数据库的用户名
 		String password = "Mdzz1234";//登录数据库的用户名的密码
 		Connection conn = null;
