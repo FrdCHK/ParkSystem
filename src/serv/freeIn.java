@@ -34,8 +34,14 @@ public class freeIn extends HttpServlet {
 		String carNo=request.getParameter("carNo");
 		carNo=new String(carNo.getBytes("iso-8859-1"),"utf-8");
 		int carClass=Integer.parseInt(request.getParameter("carClass"));
+		
+		//验证车牌号合法性
+		final String regexCar="^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$";
+		if(!carNo.matches(regexCar)){response.sendRedirect("result.jsp?s=5");}
+		else{
+		
 		System.out.println(carNo+carClass);
-		String url = "jdbc:mysql://localhost:3306/parksystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
+		String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
 		String user = "root";//登录数据库的用户名
 		String password = "Mdzz1234";//登录数据库的用户名的密码
 		Connection conn = null;
@@ -149,7 +155,7 @@ public class freeIn extends HttpServlet {
 			}
 			response.sendRedirect("result.jsp?s=1");}
 	}
-
+	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

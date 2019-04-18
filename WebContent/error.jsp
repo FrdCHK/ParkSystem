@@ -18,14 +18,9 @@
 
     <!-- Custom styles for this template -->
     <link href="css/navbar-fixed-top.css" rel="stylesheet">
-	<link href="css/index.css" rel="stylesheet">
+
   </head>
-  <%HttpSession sess = request.getSession(true);
-    		String userid=(String)sess.getAttribute("userid");
-    		if(userid==null)
-    		{
-    			response.sendRedirect("manageLogin.jsp");
-    		}%>
+
   <body>
       <!-- header -->
       <nav class="navbar" role="navigation">
@@ -73,8 +68,7 @@
               <li><a href="status.jsp">车位状态</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-			<b>登录成功！欢迎，<%=userid %></b>
-              <a class="btn btn-default navbar-btn" href="quit" role="button">退出登录</a>
+              <a class="btn btn-default navbar-btn" href="manageLogin.jsp" role="button">登录</a>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -88,22 +82,10 @@
     		<%request.setCharacterEncoding("UTF-8");
     		int succ=Integer.parseInt(request.getParameter("s"));
     		if(succ==1){
-    			%><p>操作成功！</p><%
+    			%><p>密码错误！</p><%
     		}else if(succ==0){%>
-    		<p>操作失败！</p><%
-    		}else if(succ==2){%>
-    		<p>车位已满！</p><%
-    		}else if(succ==3){%>
-			<p>操作失败！请输入合法的身份证号！</p><%
-			}else if(succ==4){%>
-			<p>操作失败！请输入合法的手机号！</p><%
-			}else if(succ==5){%>
-			<p>操作失败！请输入合法的车牌号！</p><%
-			}%>
-			<a class="btn btn-default" href="manage.jsp">停车场业务</a>
-			<a class="btn btn-default" href="freePark.jsp">进出管理</a>
-			<a class="btn btn-default" href="managePlace.jsp">车位管理</a>
-			<br><a class="btn btn-default" href="user.jsp">车卡业务</a>
+    		<p>找不到用户名！</p><%
+    		}%>
     </div><!-- /input-group -->
   		</div>
   </div><!-- /.col-lg-6 -->
@@ -113,17 +95,5 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-        <script>/*下拉菜单*/
-$(document).ready(function(){
-dropdownOpen();
-});
-function dropdownOpen() {
-var $dropdownLi = $('li.dropdown');
-$dropdownLi.mouseover(function() {
-$(this).addClass('open');
-}).mouseout(function() {
-$(this).removeClass('open');
-});
-}</script>
   </body>
 </html>

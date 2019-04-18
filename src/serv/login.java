@@ -37,7 +37,7 @@ public class login extends HttpServlet {
 		HttpSession sess = request.getSession(true);
 		user usr=new user();
 		String username=request.getParameter("username"), passwd=request.getParameter("passwd");
-		  String url = "jdbc:mysql://localhost:3306/parksystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
+		  String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
 		String user = "root";//登录数据库的用户名
 		String password = "Mdzz1234";//登录数据库的用户名的密码
 		Connection conn = null;
@@ -63,12 +63,14 @@ public class login extends HttpServlet {
 		    	usr.setPasswd(pswd);
 				response.sendRedirect("index.jsp");
 		    }else{
-		    	response.sendRedirect("manageLogin.jsp");
+		    	response.sendRedirect("error.jsp?s=1");
 		     }
 		    }
+		
 		}catch(SQLException e){
 			System.out.println("查询用户信息失败");
-	    	response.sendRedirect("manageLogin.jsp");}
+	    	response.sendRedirect("error.jsp?s=0");}
+		response.sendRedirect("error.jsp?s=0");
 	}
 
 	/**

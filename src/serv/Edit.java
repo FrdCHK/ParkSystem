@@ -39,7 +39,7 @@ public class Edit extends HttpServlet {
 		}
 		int placeNo=Integer.parseInt(request.getParameter("placeNo"));
 		int placeClass=Integer.parseInt(request.getParameter("pClass"));
-		String url = "jdbc:mysql://localhost:3306/parksystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
+		String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
 		String user = "root";//登录数据库的用户名
 		String password = "Mdzz1234";//登录数据库的用户名的密码
 		Connection conn = null;

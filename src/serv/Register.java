@@ -1,6 +1,7 @@
 package serv;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +41,15 @@ public class Register extends HttpServlet {
 		String id=request.getParameter("id");
 		String name=request.getParameter("name");
 		String phone=request.getParameter("phone");
-		String url = "jdbc:mysql://localhost:3306/parksystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
+		
+		//校验手机号及身份证合法性
+		final String regexPhone="^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
+		final String regexId="^[1-9]\\d{5}(18|19|(2\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
+		if(!id.matches(regexId)){response.sendRedirect("result.jsp?s=3");}
+		else if(!phone.matches(regexPhone)){response.sendRedirect("result.jsp?s=4");}
+		else{
+		
+		String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
 		String user = "root";//登录数据库的用户名
 		String password = "Mdzz1234";//登录数据库的用户名的密码
 		Connection conn = null;
@@ -94,7 +103,7 @@ public class Register extends HttpServlet {
 			response.sendRedirect("result.jsp?s=0");
 		}
 	}
-
+	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
