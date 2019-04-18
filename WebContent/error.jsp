@@ -23,40 +23,6 @@
 
   <body>
       <!-- header -->
-      <nav class="navbar" role="navigation">
- 		<div style="width:200px">
-					<ul class="nav nav-pills nav-stacked">
-						<li class="dropdown">
-							<a href="manage.jsp" class="dropdown-toggle disabled">停车场业务 
-							<span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li class="dropdown-submenu">  
-									<a href="freePark.jsp">车辆进出</a>
-									<ul class="dropdown-menu">  
-										<li><a href="freeParkIn.jsp">入场</a></li>  
-                        				<li><a href="freeParkOut.jsp">出场</a></li>  
-                    				</ul>  
-								</li>
-								<li class="dropdown-submenu">  
-									<a href="managePlace.jsp">车位管理</a>
-									<ul class="dropdown-menu">  
-										<li><a href="addPlace.jsp">增加车位</a></li>  
-                    				</ul>  
-								</li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="user.jsp" class="dropdown-toggle disabled" data-toggle="dropdown">车卡业务 
-							<span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">  
-										<li><a href="cardManage.jsp">车卡管理</a></li>  
-                        				<li><a href="ownerRegister.jsp">车主登记</a></li>
-                        				<li><a href="addCard.jsp">车卡登记</a></li>   
-							</ul>
-						</li>
-					</ul>
-					</div>
-</nav>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
           <div class="navbar-header">
@@ -80,11 +46,13 @@
       <div class="col-md-6 col-md-offset-3">
     <div class="input-group center-block">
     		<%request.setCharacterEncoding("UTF-8");
-    		int succ=Integer.parseInt(request.getParameter("s"));
-    		if(succ==1){
+    		int error=Integer.parseInt(request.getParameter("s"));
+    		if(error==1){
     			%><p>密码错误！</p><%
-    		}else if(succ==0){%>
+    		}else if(error==0){%>
     		<p>找不到用户名！</p><%
+    		}else if(error==2){%>
+    		<p>用户名或密码含有非法字符！</p><%
     		}%>
     </div><!-- /input-group -->
   		</div>

@@ -41,7 +41,6 @@ public class freeOut extends HttpServlet {
 		final String regexCar="^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$";
 		if(!carNo.matches(regexCar)){response.sendRedirect("result.jsp?s=5");}
 		else{
-		
 		float sum=0;
 		int no=0;
 		String url = "jdbc:mysql://localhost:3306/ParkSystem?useUnicode=true&characterEncoding=utf-8";//连接数据库的url地址
@@ -69,95 +68,104 @@ public class freeOut extends HttpServlet {
 			response.sendRedirect("result.jsp?s=0");
 		}
 		ResultSet rs;
+		int ifCard=0, cardNo=0;
+		String sql="";
 		try {
 			rs = stmt.executeQuery(queryAll);
-			while(rs.next()) {
+			if(rs.next()) {
 				no=rs.getInt(1);
+				sql="update record set outTime=now() where no="+no;
+				System.out.println("next no: "+no);
+				try {
+					queryAll="select no from card where carNo='"+carNo+"'";
+					rs = stmt.executeQuery(queryAll);
+					while(rs.next()) {
+						ifCard=1;
+						cardNo=rs.getInt(1);
+					}
+				} catch (SQLException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+					System.out.println("莫名其妙的catch七号");
+					response.sendRedirect("result.jsp?s=0");
+				}
+				try {
+					stmt.executeUpdate(sql);
+					System.out.println(sql);
+				} catch (SQLException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+					System.out.println("莫名其妙的catch三号");
+					response.sendRedirect("result.jsp?s=0");
+				}
+				queryAll = "SELECT timestampdiff(minute, inTime, outTime), carClass FROM record where no="+no;
+				System.out.println(queryAll);
+				int min=0, cls=0;
+				try {
+					rs = stmt.executeQuery(queryAll);
+					while(rs.next()) {
+						min=rs.getInt(1);
+						cls=rs.getInt(2);
+					}
+				} catch (SQLException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+					System.out.println("莫名其妙的catch四号");
+					response.sendRedirect("result.jsp?s=0");
+				}
+				System.out.println(min+cls);
+				if(cls==1 && ifCard==0) {
+					sum=(float)min*(float)0.1;
+				}else if(cls==0 && ifCard==0){
+					sum=(float)min*(float)0.15;
+				}
+				BigDecimal bd= new BigDecimal(sum);
+				sum=bd.setScale(1, RoundingMode.HALF_UP).floatValue();
+				sql="update record set sum="+sum+" where no="+no;
+				System.out.println(sql);
+				try {
+					stmt.executeUpdate(sql);
+				} catch (SQLException e1) {
+					// TODO 自动生成的 catch 块
+					e1.printStackTrace();
+					System.out.println("莫名其妙的catch五号");
+					response.sendRedirect("result.jsp?s=0");
+				}
+				if(ifCard==0)
+				{
+					sql="update free set remain=remain+'1'";
+					try {
+						stmt.executeUpdate(sql);
+						String redirc="fund.jsp?sum="+sum;
+						response.sendRedirect(redirc);
+					} catch (SQLException e) {
+						// TODO 自动生成的 catch 块
+						e.printStackTrace();
+						System.out.println("莫名其妙的catch八号");
+						response.sendRedirect("result.jsp?s=0");
+					}
+				}else {
+					sql="update place set status=0 where cardNo="+cardNo;
+					try {
+						stmt.executeUpdate(sql);
+						String redirc="fund.jsp?sum="+sum;
+						response.sendRedirect(redirc);
+					} catch (SQLException e) {
+						// TODO 自动生成的 catch 块
+						e.printStackTrace();
+						System.out.println("莫名其妙的catch四号");
+						response.sendRedirect("result.jsp?s=0");
+					}
+				}
+			}else {
+				System.out.println("else");
+				response.sendRedirect("result.jsp?s=0");
 			}
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 			System.out.println("莫名其妙的catch二号");
 			response.sendRedirect("result.jsp?s=0");
-		}
-		int ifCard=0, cardNo=0;
-		try {
-			queryAll="select no from card where carNo='"+carNo+"'";
-			rs = stmt.executeQuery(queryAll);
-			while(rs.next()) {
-				ifCard=1;
-				cardNo=rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-			System.out.println("莫名其妙的catch七号");
-			response.sendRedirect("result.jsp?s=0");
-		}
-		String sql="update record set outTime=now() where no="+no;
-		System.out.println(sql);
-		try {
-			stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-			System.out.println("莫名其妙的catch三号");
-			response.sendRedirect("result.jsp?s=0");
-		}
-		queryAll = "SELECT timestampdiff(minute, inTime, outTime), carClass FROM record where no="+no;
-		System.out.println(queryAll);
-		int min=0, cls=0;
-		try {
-			rs = stmt.executeQuery(queryAll);
-			while(rs.next()) {
-				min=rs.getInt(1);
-				cls=rs.getInt(2);
-			}
-		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-			System.out.println("莫名其妙的catch四号");
-			response.sendRedirect("result.jsp?s=0");
-		}
-		System.out.println(min+cls);
-		if(cls==1 && ifCard==0) {
-			sum=(float)min*(float)0.1;
-		}else if(cls==0 && ifCard==0){
-			sum=(float)min*(float)0.15;
-		}
-		BigDecimal bd= new BigDecimal(sum);
-		sum=bd.setScale(1, RoundingMode.HALF_UP).floatValue();
-		sql="update record set sum="+sum+" where no="+no;
-		System.out.println(sql);
-		try {
-			stmt.executeUpdate(sql);
-		} catch (SQLException e1) {
-			// TODO 自动生成的 catch 块
-			e1.printStackTrace();
-			System.out.println("莫名其妙的catch五号");
-			response.sendRedirect("result.jsp?s=0");
-		}
-		if(ifCard==0)
-		{
-			sql="update free set remain=remain+'1'";
-			try {
-				stmt.executeUpdate(sql);
-			} catch (SQLException e) {
-				// TODO 自动生成的 catch 块
-				e.printStackTrace();
-				System.out.println("莫名其妙的catch八号");
-				response.sendRedirect("result.jsp?s=0");
-			}
-		}else {
-			sql="update place set status=0 where cardNo="+cardNo;
-			try {
-				stmt.executeUpdate(sql);
-			} catch (SQLException e) {
-				// TODO 自动生成的 catch 块
-				e.printStackTrace();
-				System.out.println("莫名其妙的catch四号");
-				response.sendRedirect("result.jsp?s=0");
-			}
 		}
 		try {
 			stmt.close();
@@ -168,8 +176,6 @@ public class freeOut extends HttpServlet {
 			System.out.println("莫名其妙的catch六号");
 			response.sendRedirect("result.jsp?s=0");
 		}
-		String redirc="fund.jsp?sum="+sum;
-		response.sendRedirect(redirc);
 	}
 	}
 	/**
