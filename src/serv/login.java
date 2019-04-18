@@ -65,12 +65,11 @@ public class login extends HttpServlet {
 		    }else{
 		    	response.sendRedirect("error.jsp?s=1");
 		     }
-		    }
-		
+		    }else 
+				response.sendRedirect("error.jsp?s=0");
 		}catch(SQLException e){
 			System.out.println("查询用户信息失败");
 	    	response.sendRedirect("error.jsp?s=0");}
-		response.sendRedirect("error.jsp?s=0");
 	}
 
 	/**

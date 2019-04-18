@@ -70,14 +70,30 @@
         </div>
       </nav>
 <!-- header  end-->
+<script type="text/javascript">
+	function addId(formsub){
+		document.getElementById("b1").style.visibility="hidden";
+		document.getElementById("b2").style.visibility="hidden";
+		console.log("onsubmit");
+		if(formsub.elements[0].value==""){
+			document.getElementById("b1").style.visibility="visible";
+			console.log("blank username");
+			return false;
+		}else if(formsub.elements[1].value==""){
+			document.getElementById("b2").style.visibility="visible";
+			console.log("blank passwd");
+			return false;
+		}
+	}
+</script>
 <!-- main -->
 <div class="container">
   <div class="row">
       <div class="col-md-6 col-md-offset-3">
     <div class="input-group center-block">
-			<form action="login" method="post">
-					<input type="text" class="form-control" name="username" value="" placeholder="用户名" />
-					<input type="password" class="form-control" name="passwd" value="" placeholder="密码" />
+			<form action="login" method="post" onsubmit="return addId(this);">
+					<input type="text" class="form-control" name="username" value="" placeholder="用户名" /><br><b id="b1" style="visibility:hidden">用户名不能为空！</b><br>
+					<input type="password" class="form-control" name="passwd" value="" placeholder="密码" /><br><b id="b2" style="visibility:hidden">密码不能为空！</b><br>
 				<span class="input-group-btn">
 					<input type="submit"  class="btn btn-default" value="登录" />
 				</span>

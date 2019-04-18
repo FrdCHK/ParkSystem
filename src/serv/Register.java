@@ -40,6 +40,7 @@ public class Register extends HttpServlet {
 		}
 		String id=request.getParameter("id");
 		String name=request.getParameter("name");
+		name=new String(name.getBytes("iso-8859-1"),"utf-8");
 		String phone=request.getParameter("phone");
 		
 		//校验手机号及身份证合法性
